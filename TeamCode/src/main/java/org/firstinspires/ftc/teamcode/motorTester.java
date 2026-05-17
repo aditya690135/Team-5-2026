@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp
-public class basicTeleOp extends OpMode {
+public class motorTester extends OpMode {
 //introducing variables
     private DcMotor frontLeft, frontRight, backLeft, backRight;
 
