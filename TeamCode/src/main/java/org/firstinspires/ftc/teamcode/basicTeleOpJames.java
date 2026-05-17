@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
-public class basicTeleOpv2 extends OpMode {
+public class basicTeleOpJames extends OpMode {
 //introducing variables
     private DcMotor frontLeft, frontRight, backLeft, backRight;
 
