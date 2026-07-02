@@ -18,16 +18,13 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        double DeadBand = 0.05;
+        final double DeadBand = 0.05;
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
-        ArmAxonCR = hardwareMap.get(CRServo.class, "ArmAxonCR");
-        DcMotor motor = hardwareMap.dcMotor.get("frontLeftMotor");
-        DcMotor motor = hardwareMap.dcMotor.get("frontRightMotor");
+        ArmAxonCR = hardwareMap.get(CRServo.class, "GoBildaDMServo");
         DcMotor outtake = hardwareMap.dcMotor.get("outtake");
-        CRServo outtakeServo = hardwareMap.get(CRServo.class, "outtakeServo");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -77,6 +74,18 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
 
         if (isStopRequested()) return;
         while (opModeIsActive()) {
+            double gamepad1LeftY = -gamepad1.left_stick_y;
+            double gamepad1LeftX = -gamepad1.left_stick_x;
+            double gamepad1RightX = gamepad1.right_stick_x;
+            if (Math.abs(gamepad1LeftY) < DeadBand) {
+                gamepad1LeftY = 0;
+            }
+            if (Math.abs(gamepad1LeftX) < DeadBand) {
+                gamepad1LeftX = 0;
+            }
+            if (Math.abs(gamepad1RightX) < DeadBand) {
+                gamepad1RightX = 0;
+            }
             double y = -gamepad1.left_stick_y + -gamepad2.left_stick_y / 5; // Y stick value is reversed
             double x = -gamepad1.left_stick_x + -gamepad2.left_stick_x / 5;
             double rx = gamepad1.right_stick_x + gamepad2.right_stick_x / 5;
