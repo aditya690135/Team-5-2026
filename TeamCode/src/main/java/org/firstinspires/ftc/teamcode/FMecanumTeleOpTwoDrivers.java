@@ -13,43 +13,33 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 @TeleOp (name = "Mecanum TeleOp Two Drivers", group = "LinearOpMode")
 public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
 
-    //private CRServo ArmAxonCR;
-    //private Servo ClawAxon;
-
-    private DcMotor frontRightMotor;
-
+    private CRServo ArmAxonCR;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        // Declare motors
-        int DesiredAngle1;
-        int DesiredAngle2;
-        int DesiredAngle3;
-        double DesiredAngle4;
-        int DeadBand;
-        // int Arm_Pos;
-        double servoPower = 0;
-        int WhichAngle = 0;
+
+        double DeadBand = 0.05;
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
-        //  ArmAxonCR = hardwareMap.get(CRServo.class, "ArmAxonCR");
-        //ClawAxon = hardwareMap.get(Servo.class, "ClawAxon");
-        // Find a motor in the hardware map named "frontRightMotor"
+        ArmAxonCR = hardwareMap.get(CRServo.class, "ArmAxonCR");
+        DcMotor motor = hardwareMap.dcMotor.get("frontLeftMotor");
         DcMotor motor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor outtake = hardwareMap.dcMotor.get("outtake");
         CRServo outtakeServo = hardwareMap.get(CRServo.class, "outtakeServo");
 
-        //Shooter shooter = new Shooter(hardwareMap);
-        //Intake intake = new Intake(hardwareMap);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        DesiredAngle1 = -250;
-        DesiredAngle2 = -180;
-        DesiredAngle3 = -75;
-        DesiredAngle4 = -0.1;
-        DeadBand = 1;
-        //ArmAxonCR.setDirection(CRServo.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        Shooter shooter = new Shooter(hardwareMap);
+        Intake intake = new Intake(hardwareMap);
+
+
+        ArmAxonCR.setDirection(CRServo.Direction.REVERSE);
 
 //Reset the motor encoder so that it reads zero ticks
         //  motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
