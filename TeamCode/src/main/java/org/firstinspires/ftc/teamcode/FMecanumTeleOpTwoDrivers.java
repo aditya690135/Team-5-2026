@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.lib.Shooter;
+import org.firstinspires.ftc.teamcode.lib.Intake;
 
 @TeleOp (name = "Mecanum TeleOp Two Drivers", group = "LinearOpMode")
 public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
@@ -23,7 +25,7 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
-        ArmAxonCR = hardwareMap.get(CRServo.class, "GoBildaDMServo");
+        ArmAxonCR = hardwareMap.get(CRServo.class, "intakeServo");
         DcMotor outtake = hardwareMap.dcMotor.get("outtake");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -32,25 +34,17 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        ArmAxonCR.setDirection(CRServo.Direction.REVERSE);
+
+        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         Shooter shooter = new Shooter(hardwareMap);
         Intake intake = new Intake(hardwareMap);
 
-
-        ArmAxonCR.setDirection(CRServo.Direction.REVERSE);
-
-//Reset the motor encoder so that it reads zero ticks
-        //  motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
-        // motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-        // Reverse the right side motors. This may be wrong.
-        // If robot moves backwards when commanded to go forwards,
-        // reverse the left side instead.
-        // See the note about this earlier on this page.
-        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Create an object to receive the IMU angles
        /* YawPitchRollAngles robotOrientation;
@@ -77,6 +71,9 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             double gamepad1LeftY = -gamepad1.left_stick_y;
             double gamepad1LeftX = -gamepad1.left_stick_x;
             double gamepad1RightX = gamepad1.right_stick_x;
+            double gamepad2LeftY = -gamepad2.left_stick_y;
+            double gamepad2LeftX = -gamepad2.left_stick_x;
+            double gamepad2RightX = gamepad2.right_stick_x;
             if (Math.abs(gamepad1LeftY) < DeadBand) {
                 gamepad1LeftY = 0;
             }
@@ -86,9 +83,18 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             if (Math.abs(gamepad1RightX) < DeadBand) {
                 gamepad1RightX = 0;
             }
-            double y = -gamepad1.left_stick_y + -gamepad2.left_stick_y / 5; // Y stick value is reversed
-            double x = -gamepad1.left_stick_x + -gamepad2.left_stick_x / 5;
-            double rx = gamepad1.right_stick_x + gamepad2.right_stick_x / 5;
+            if (Math.abs(gamepad2LeftY) < DeadBand) {
+                gamepad1RightX = 0;
+            }
+            if (Math.abs(gamepad2LeftX) < DeadBand) {
+                gamepad1RightX = 0;
+            }
+            if (Math.abs(gamepad2RightX) < DeadBand) {
+                gamepad1RightX = 0;
+            }
+            double y = gamepad1LeftY + (-gamepad2.left_stick_y / 5);
+            double x = gamepad1LeftX + (-gamepad2.left_stick_x / 5);
+            double rx = gamepad1RightX + (gamepad2.right_stick_x / 5);
 
             double CPR = 8192;
 
@@ -110,9 +116,9 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             //double Arm_Pos = -angle;
 
             double LTrigger = gamepad2.left_trigger;
-            //intake.runIntake(LTrigger);
+            intake.runIntake(LTrigger);
             double RTrigger = gamepad2.right_trigger;
-            //shooter.outtakeShoot(RTrigger);
+            shooter.outtakeShoot(RTrigger);
 
             // This button choice was made so that it is hard to hit on accident,
             // it can be freely changed based on preference.
@@ -126,20 +132,18 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
 
             if (gamepad2.b) {
                 outtake.setPower(0.5);
-            }
-
-            else if (gamepad2.a) {
+            } else if (gamepad2.a) {
                 outtake.setPower(-1);
             }
 
-            outtakeServo.setPower(0);
+            ArmAxonCR.setPower(0);
 
             if (LTrigger > 0.01) {
-                outtakeServo.setPower(-1);
+                ArmAxonCR.setPower(-1);
             }
 
             if (RTrigger > 0.01) {
-                outtakeServo.setPower(1);
+                ArmAxonCR.setPower(1);
             }
 
             double botHeading = imu.getHeading(AngleUnit.RADIANS);
@@ -165,14 +169,14 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
                 double max2 = Math.max(Math.abs(frontRightPower), Math.abs(backRightPower));
                 double max3 = Math.max(max1, max2);
 
-                if (max3<1) {
+                if (max3 < 1) {
                     max3 = 1;
                 }
 
-                frontLeftMotor.setPower(frontLeftPower/max3);
-                backLeftMotor.setPower(backLeftPower/max3);
-                frontRightMotor.setPower(frontRightPower/max3);
-                backRightMotor.setPower(backRightPower/max3);
+                frontLeftMotor.setPower(frontLeftPower / max3);
+                backLeftMotor.setPower(backLeftPower / max3);
+                frontRightMotor.setPower(frontRightPower / max3);
+                backRightMotor.setPower(backRightPower / max3);
             } else {
                 double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
                 double frontLeftPower = (rotY - rotX + rx) / denominator;
@@ -191,25 +195,4 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         }
 
     }
-
-    public static class Shooter {
-        DcMotor shooterMotor;
-        CRServo shooterServo1;
-        final boolean REVERSEMOTOR = false;
-        final boolean REVERSESERVO = false;
-        public Shooter (HardwareMap map) {
-            shooterMotor = map.get(DcMotor.class, "motor");
-            shooterMotor.setDirection(REVERSEMOTOR ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
-            shooterServo1 = map.get(CRServo.class, "spin");
-        }
-        public void outtakeShoot (double RTrigger) {
-            if (Math.abs(RTrigger) > 0.1) {
-                shooterMotor.setPower(1);
-                shooterServo1.setPower(REVERSESERVO ? -1 : 1);
-            } else {
-                shooterMotor.setPower(0);
-                shooterServo1.setPower(0);
-            }
-        }
     }
-}
