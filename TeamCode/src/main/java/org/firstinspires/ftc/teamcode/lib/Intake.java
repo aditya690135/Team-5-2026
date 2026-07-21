@@ -23,7 +23,7 @@ public class Intake {
 
 
     public Intake (HardwareMap map) {
-        intakeMotor = map.get(DcMotor.class, "motor");
+        intakeMotor = map.get(DcMotor.class, "intakeMotor");
         intakeMotor.setDirection(reverseMotor ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
         intakeServo = map.get(CRServo.class, "spin");
         intakeMotor.getCurrentPosition();

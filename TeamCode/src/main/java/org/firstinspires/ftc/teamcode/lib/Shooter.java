@@ -19,7 +19,7 @@ public class Shooter {
 
 
     public Shooter (HardwareMap map) {
-        shooterMotor = map.get(DcMotor.class, "motor");
+        shooterMotor = map.get(DcMotor.class, "shooterMotor");
         shooterMotor.setDirection(reverseMotor ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
         //shooterServo1 = map.get(CRServo.class, "spin");
     }
