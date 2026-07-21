@@ -26,7 +26,7 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
         ArmAxonCR = hardwareMap.get(CRServo.class, "intakeServo");
-        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooterMotor");
+        DcMotor outtake = hardwareMap.dcMotor.get("outtake");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,7 +40,7 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         Shooter shooter = new Shooter(hardwareMap);
         Intake intake = new Intake(hardwareMap);
@@ -127,13 +127,13 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
                 imu.resetPosAndIMU();
             }
 
-            shooterMotor.setPower(0);
+            outtake.setPower(0);
 
 
             if (gamepad2.b) {
-                shooterMotor.setPower(0.5);
+                outtake.setPower(0.5);
             } else if (gamepad2.a) {
-                shooterMotor.setPower(-1);
+                outtake.setPower(-1);
             }
 
             ArmAxonCR.setPower(0);
