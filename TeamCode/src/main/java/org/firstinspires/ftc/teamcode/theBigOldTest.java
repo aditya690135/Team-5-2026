@@ -11,8 +11,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.lib.Shooter;
 import org.firstinspires.ftc.teamcode.lib.Intake;
 
-@TeleOp (name = "Mecanum TeleOp Two Drivers", group = "LinearOpMode")
-public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
+@TeleOp (name = "Mecanum TeleOp Two Drivers 2.0", group = "LinearOpMode")
+public class theBigOldTest extends LinearOpMode {
 
     private CRServo ArmAxonCR;
 
@@ -83,13 +83,13 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
                 gamepad1RightX = 0;
             }
             if (Math.abs(gamepad2LeftY) < DeadBand) {
-                gamepad1LeftX = 0;
+                gamepad2LeftY = 0;
             }
             if (Math.abs(gamepad2LeftX) < DeadBand) {
-                gamepad1LeftX = 0;
+                gamepad2LeftX = 0;
             }
             if (Math.abs(gamepad2RightX) < DeadBand) {
-                gamepad1RightX = 0;
+                gamepad2RightX = 0;
             }
             double y = gamepad1LeftY + (gamepad2LeftY/ 5);
             double x = gamepad1LeftX + (gamepad2LeftX / 5);
@@ -115,8 +115,16 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             //double Arm_Pos = -angle;
 
             double LTrigger = gamepad2.left_trigger;
-            intake.runIntake(LTrigger);
             double RTrigger = gamepad2.right_trigger;
+
+            if (LTrigger > 0.1) {
+                intake.runIntake(1);
+            } else if (gamepad2.x) {
+                intake.runIntake(-1);
+            } else {
+                intake.runIntake(0);
+            }
+
             shooter.outtakeShoot(RTrigger);
 
             // This button choice was made so that it is hard to hit on accident,
@@ -137,11 +145,7 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
 
             ArmAxonCR.setPower(0);
 
-            if (LTrigger > 0.01) {
-                ArmAxonCR.setPower(-1);
-            }
-
-            if (RTrigger > 0.01) {
+            if (gamepad2.y) {
                 ArmAxonCR.setPower(1);
             }
 
@@ -196,4 +200,4 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         }
 
     }
-    }
+}

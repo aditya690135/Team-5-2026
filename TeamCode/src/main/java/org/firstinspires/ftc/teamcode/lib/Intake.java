@@ -31,10 +31,13 @@ public class Intake {
 
 
 
-    public void runIntake (double LTrigger) {
-        if (Math.abs(LTrigger) > 0.1) {
+    public void runIntake(double power) {
+        if (power > 0) {
             intakeMotor.setPower(reverseServo ? -1 : 1);
             intakeServo.setPower(reverseServo ? -1 : 1);
+        } else if (power < 0) {
+            intakeMotor.setPower(reverseServo ? 1 : -1);
+            intakeServo.setPower(reverseServo ? 1 : -1);
         } else {
             intakeMotor.setPower(0);
             intakeServo.setPower(0);
