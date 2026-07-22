@@ -84,10 +84,10 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
                 gamepad1RightX = 0;
             }
             if (Math.abs(gamepad2LeftY) < DeadBand) {
-                gamepad1RightX = 0;
+                gamepad1LeftX = 0;
             }
             if (Math.abs(gamepad2LeftX) < DeadBand) {
-                gamepad1RightX = 0;
+                gamepad1LeftX = 0;
             }
             if (Math.abs(gamepad2RightX) < DeadBand) {
                 gamepad1RightX = 0;
