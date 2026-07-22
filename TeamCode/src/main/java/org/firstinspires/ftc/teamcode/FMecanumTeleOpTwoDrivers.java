@@ -26,13 +26,13 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
         ArmAxonCR = hardwareMap.get(CRServo.class, "intakeServo");
-        DcMotor outtake = hardwareMap.dcMotor.get("outtake");
+        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooterMotor");
 
-        frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         ArmAxonCR.setDirection(CRServo.Direction.REVERSE);
 
@@ -40,7 +40,7 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         Shooter shooter = new Shooter(hardwareMap);
         Intake intake = new Intake(hardwareMap);
@@ -54,11 +54,11 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
         AngularVelocity myRobotAngularVelocity;
 */
         // Retrieve the IMU from the hardware map
-        GoBildaPinpointDriver imu = hardwareMap.get(GoBildaPinpointDriver.class, "pinpointimu");
+//        GoBildaPinpointDriver imu = hardwareMap.get(GoBildaPinpointDriver.class, "pinpointimu");
 
-        imu.recalibrateIMU();
+//        imu.recalibrateIMU();
 
-        imu.resetPosAndIMU();
+//        imu.resetPosAndIMU();
 
         waitForStart();
 
@@ -92,9 +92,9 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             if (Math.abs(gamepad2RightX) < DeadBand) {
                 gamepad1RightX = 0;
             }
-            double y = gamepad1LeftY + (-gamepad2.left_stick_y / 5);
-            double x = gamepad1LeftX + (-gamepad2.left_stick_x / 5);
-            double rx = gamepad1RightX + (gamepad2.right_stick_x / 5);
+            double y = gamepad1LeftY + (gamepad2LeftY/ 5);
+            double x = gamepad1LeftX + (gamepad2LeftX / 5);
+            double rx = gamepad1RightX + (gamepad2RightX / 5);
 
             double CPR = 8192;
 
@@ -123,17 +123,17 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             // This button choice was made so that it is hard to hit on accident,
             // it can be freely changed based on preference.
             // The equivalent button is start on some controllers.
-            if (gamepad1.start) {
-                imu.resetPosAndIMU();
-            }
+//            if (gamepad1.start) {
+//                imu.resetPosAndIMU();
+//            }
 
-            outtake.setPower(0);
+            shooterMotor.setPower(0);
 
 
             if (gamepad2.b) {
-                outtake.setPower(0.5);
+                shooterMotor.setPower(0.5);
             } else if (gamepad2.a) {
-                outtake.setPower(-1);
+                shooterMotor.setPower(-1);
             }
 
             ArmAxonCR.setPower(0);
@@ -146,8 +146,10 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
                 ArmAxonCR.setPower(1);
             }
 
-            double botHeading = imu.getHeading(AngleUnit.RADIANS);
-            double botHeadingMeasure = imu.getHeading(AngleUnit.DEGREES);
+//            double botHeading = imu.getHeading(AngleUnit.RADIANS);
+//            double botHeadingMeasure = imu.getHeading(AngleUnit.DEGREES);
+            double botHeading = 0;
+            double botHeadingMeasure = 0;
             telemetry.addLine("Field orientation is: " + botHeadingMeasure);
 
             // Rotate the movement direction counter to the bot's rotation
@@ -160,10 +162,10 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             // This ensures all the powers maintain the same ratio,
             // but only if at least one is out of the range [-1, 1]
             if (driveType) {
-                double frontLeftPower = -y + rx + x;
-                double backLeftPower = -y + rx - x;
-                double frontRightPower = -y - rx - x;
-                double backRightPower = -y - rx + x;
+                double frontLeftPower = y + rx - x;
+                double backLeftPower = y + rx + x;
+                double frontRightPower =  y - rx - x;
+                double backRightPower = y - rx + x;
 
                 double max1 = Math.max(Math.abs(frontLeftPower), Math.abs(backLeftPower));
                 double max2 = Math.max(Math.abs(frontRightPower), Math.abs(backRightPower));
@@ -191,7 +193,7 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             }
 
             telemetry.update();
-            imu.update();
+//            imu.update();
         }
 
     }
