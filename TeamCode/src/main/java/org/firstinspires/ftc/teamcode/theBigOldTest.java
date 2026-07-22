@@ -25,7 +25,7 @@ public class theBigOldTest extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
         ArmAxonCR = hardwareMap.get(CRServo.class, "intakeServo");
-        DcMotor shooterMotor = hardwareMap.dcMotor.get("shooterMotor");
+        //DcMotor shooterMotor = hardwareMap.dcMotor.get("shooterMotor");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -33,13 +33,13 @@ public class theBigOldTest extends LinearOpMode {
         frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        ArmAxonCR.setDirection(CRServo.Direction.REVERSE);
+        ArmAxonCR.setDirection(CRServo.Direction.FORWARD);
 
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         Shooter shooter = new Shooter(hardwareMap);
         Intake intake = new Intake(hardwareMap);
@@ -119,35 +119,27 @@ public class theBigOldTest extends LinearOpMode {
 
             if (LTrigger > 0.1) {
                 intake.runIntake(1);
-            } else if (gamepad2.x) {
-                intake.runIntake(-1);
+            } else if (gamepad2.left_bumper) {
+                intake.runIntake(-0.2);
             } else {
                 intake.runIntake(0);
             }
 
-            shooter.outtakeShoot(RTrigger);
-
-            // This button choice was made so that it is hard to hit on accident,
-            // it can be freely changed based on preference.
-            // The equivalent button is start on some controllers.
-//            if (gamepad1.start) {
-//                imu.resetPosAndIMU();
-//            }
-
-            shooterMotor.setPower(0);
-
-
-            if (gamepad2.b) {
-                shooterMotor.setPower(0.5);
-            } else if (gamepad2.a) {
-                shooterMotor.setPower(-1);
+            if (RTrigger > 0.1) {
+                shooter.runShooter(1);
+            } else {
+                shooter.runShooter(0);
             }
 
-            ArmAxonCR.setPower(0);
 
             if (gamepad2.y) {
+                ArmAxonCR.setPower(-1);
+            } else if (gamepad2.x) {
                 ArmAxonCR.setPower(1);
+            } else {
+                ArmAxonCR.setPower(0);
             }
+
 
 //            double botHeading = imu.getHeading(AngleUnit.RADIANS);
 //            double botHeadingMeasure = imu.getHeading(AngleUnit.DEGREES);

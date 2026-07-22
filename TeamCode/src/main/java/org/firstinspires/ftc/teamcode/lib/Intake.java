@@ -6,11 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import java.util.Base64;
 
 public class Intake {
     private DcMotor intakeMotor;
-    private CRServo intakeServo;
+    //private CRServo intakeServo;
     private final boolean reverseServo = false;
     private final boolean reverseMotor = false;
 
@@ -25,22 +24,13 @@ public class Intake {
     public Intake (HardwareMap map) {
         intakeMotor = map.get(DcMotor.class, "intakeMotor");
         intakeMotor.setDirection(reverseMotor ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
-        intakeServo = map.get(CRServo.class, "intakeServo");
+        //intakeServo = map.get(CRServo.class, "intakeServo");
         intakeMotor.getCurrentPosition();
     }
 
 
 
     public void runIntake(double power) {
-        if (power > 0) {
-            intakeMotor.setPower(reverseServo ? -1 : 1);
-            intakeServo.setPower(reverseServo ? -1 : 1);
-        } else if (power < 0) {
-            intakeMotor.setPower(reverseServo ? 1 : -1);
-            intakeServo.setPower(reverseServo ? 1 : -1);
-        } else {
-            intakeMotor.setPower(0);
-            intakeServo.setPower(0);
-        }
+        intakeMotor.setPower(reverseMotor ? -power : power);
     }
 }

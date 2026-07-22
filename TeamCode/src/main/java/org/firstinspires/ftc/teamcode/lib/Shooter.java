@@ -18,7 +18,7 @@ public class Shooter {
 
 
 
-    public Shooter (HardwareMap map) {
+    public Shooter(HardwareMap map) {
         shooterMotor = map.get(DcMotor.class, "shooterMotor");
         shooterMotor.setDirection(reverseMotor ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
         //shooterServo1 = map.get(CRServo.class, "spin");
@@ -26,13 +26,8 @@ public class Shooter {
 
 
 
-    public void outtakeShoot (double RTrigger) {
-        if (Math.abs(RTrigger) > 0.1) {
-            shooterMotor.setPower(1);
-            //shooterServo1.setPower(reverseMotor ? -1 : 1);
-        } else {
-            shooterMotor.setPower(0);
-            //shooterServo1.setPower(0);
-        }
+    public void runShooter(double power) {
+        shooterMotor.setPower(reverseMotor ? -power : power);
+        //shooterServo1.setPower(reverseMotor ? -power : power);
     }
 }
