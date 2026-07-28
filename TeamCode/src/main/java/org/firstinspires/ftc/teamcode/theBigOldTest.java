@@ -120,7 +120,7 @@ public class theBigOldTest extends LinearOpMode {
             if (LTrigger > 0.1) {
                 intake.runIntake(1);
             } else if (gamepad2.left_bumper) {
-                intake.runIntake(-0.2);
+                intake.runIntake(-0.35);
             } else {
                 intake.runIntake(0);
             }
