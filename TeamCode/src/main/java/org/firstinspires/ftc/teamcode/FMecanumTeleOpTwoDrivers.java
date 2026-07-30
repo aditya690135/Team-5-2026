@@ -117,7 +117,7 @@ public class FMecanumTeleOpTwoDrivers extends LinearOpMode {
             double LTrigger = gamepad2.left_trigger;
             intake.runIntake(LTrigger);
             double RTrigger = gamepad2.right_trigger;
-            shooter.outtakeShoot(RTrigger);
+            //shooter.outtakeShoot(RTrigger);
 
             // This button choice was made so that it is hard to hit on accident,
             // it can be freely changed based on preference.
