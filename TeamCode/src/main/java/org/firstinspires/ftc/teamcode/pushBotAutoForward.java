@@ -14,6 +14,8 @@ public class pushBotAutoForward extends LinearOpMode {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
+    private Intake intake;
+
     @Override
     public void runOpMode() {
 
@@ -33,6 +35,8 @@ public class pushBotAutoForward extends LinearOpMode {
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        intake = new Intake(hardwareMap);
+
         telemetry.addData("Status", "Ready to start");
         telemetry.update();
 
@@ -48,6 +52,8 @@ public class pushBotAutoForward extends LinearOpMode {
             backLeftMotor.setPower(-0.5);
             frontRightMotor.setPower(-0.5);
             backRightMotor.setPower(-0.5);
+
+            intake.runIntake(1);
 
             // Infinite loop to keep the motors spinning as long as the op mode is active
             while (opModeIsActive()) {
