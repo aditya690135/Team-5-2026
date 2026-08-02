@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name="Ringmaster Forward Auto")
-public class pushBotAuto extends LinearOpMode {
+@Autonomous (name="Ringmaster Forward Auto Forward")
+public class pushBotAutoForward extends LinearOpMode {
 
     // Define motor variables
     private DcMotor frontLeftMotor;
