@@ -17,10 +17,10 @@ public class pushBotAutoForward extends LinearOpMode {
     public void runOpMode() {
 
         // Initialize the hardware variables
-        frontLeftMotor  = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRightMotor   = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeft");
-        backRightMotor  = hardwareMap.get(DcMotor.class, "backRight");
+        frontLeftMotor  = hardwareMap.get(DcMotor.class, "frontLeftMotor");
+        frontRightMotor   = hardwareMap.get(DcMotor.class, "frontRightMotor");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
+        backRightMotor  = hardwareMap.get(DcMotor.class, "backRightMotor");
 
         // Reverse the right-side motors so positive power drives the robot forward
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -43,10 +43,10 @@ public class pushBotAutoForward extends LinearOpMode {
 
             // Set all 4 motors to move forward
             // (Adjust the power from 0.0 to 1.0 to change speed)
-            frontLeftMotor.setPower(0.5);
-            backLeftMotor.setPower(0.5);
-            frontRightMotor.setPower(0.5);
-            backRightMotor.setPower(0.5);
+            frontLeftMotor.setPower(-0.5);
+            backLeftMotor.setPower(-0.5);
+            frontRightMotor.setPower(-0.5);
+            backRightMotor.setPower(-0.5);
 
             // Infinite loop to keep the motors spinning as long as the op mode is active
             while (opModeIsActive()) {
@@ -55,10 +55,10 @@ public class pushBotAutoForward extends LinearOpMode {
             }
 
             // Stop the motors when the Stop button is pressed
-            frontLeftMotor.setPower(0.5);
-            backLeftMotor.setPower(0.5);
-            frontRightMotor.setPower(0.5);
-            backRightMotor.setPower(0.5);
+            frontLeftMotor.setPower(-0.5);
+            backLeftMotor.setPower(-0.5);
+            frontRightMotor.setPower(-0.5);
+            backRightMotor.setPower(-0.5);
         }
     }
 }
