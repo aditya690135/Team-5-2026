@@ -3,10 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.lib.Intake;
 
-@Autonomous (name="Ringmaster Forward Auto Forward")
-public class pushBotAutoForward extends LinearOpMode {
+@Autonomous (name="Ringmaster Forward Auto Right")
+public class pushBotAutoRight extends LinearOpMode {
 
     // Define motor variables
     private DcMotor frontLeftMotor;
@@ -44,9 +43,9 @@ public class pushBotAutoForward extends LinearOpMode {
 
             // Set all 4 motors to move forward
             // (Adjust the power from 0.0 to 1.0 to change speed)
-            frontLeftMotor.setPower(-0.5);
+            frontLeftMotor.setPower(0.5);
             backLeftMotor.setPower(-0.5);
-            frontRightMotor.setPower(-0.5);
+            frontRightMotor.setPower(0.5);
             backRightMotor.setPower(-0.5);
 
             // Infinite loop to keep the motors spinning as long as the op mode is active
